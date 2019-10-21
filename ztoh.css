@@ -18,11 +18,10 @@
 }
 body{margin:0; padding:0;}
 body *{box-sizing: border-box;}
-#top{box-sizing: content-box; overflow:hidden;}
 #contact img{margin-bottom:0.3em; vertical-align:middle;}
 .gradient{background: linear-gradient(to bottom, #eef 0%, #e0e0f0 100%);}
 #top{height:2em; overflow:hidden; background: linear-gradient(to bottom, #eef 0%, #e0e0f0 100%);border:1px solid rgba(0,0,0,0.3);}
-#contact{text-decoration:none;line-height:2em;height:2em; padding: 0 0.5em;color:#00f;position:absolute; right:0; border-left:1px solid #345578;}
+#contact{text-decoration:none;line-height:2em; overflow:hidden;padding: 0 0.5em;color:#00f;float:right; border-left:1px solid #345578;}
 #logo{margin-left:1em; font-size:1.3em; line-height:1.5em;color:#515151;font-weight:bold; text-decoration:none;}
 #contact:hover{background:linear-gradient(to bottom, #eef 0%, #e6e6f6 100%);}
 .benton{font-family: "Benton-Sans";}
