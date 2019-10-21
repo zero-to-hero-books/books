@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="./ztoh.css">
+<script src="https://s3.amazonaws.com/eobox/eobox.js"></script>
+<script>eobox.init('058e1122-4ae6-11e8-90ef-c35162902c5f');</script>
+<style>
+.nopointerevents{pointer-events: none}
+ul{list-style: none;padding: 0 0.3em;}
+li{margin:0.3em;}
+li a{display:block; padding:0.3em; padding-left:1.6em; text-indent:-1.3em; text-decoration:none;border: 1px solid; border-radius:3px; cursor:default; color:#000;
+border-color: rgba(52, 85, 120, 0.3) rgba(52, 85, 120, 0.3) rgba(52, 85, 120, 0.5) rgba(52, 85, 120, 0.5); 
+background:linear-gradient(to bottom, #F6F6F6 0%, #E6E6E6 100%);
+box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+li a:hover{display:block; text-decoration:none;background:linear-gradient(to bottom, #F6F6F6 0%, #D1D1D1 100%);}
+
+</style>
+<script>
+var id=document.getElementById.bind(document);
+var doc;
+function hasClass(el, classStr) {
+  if (el.classList)
+	return el.classList.contains(classStr);
+  else
+	return !!el.className.match(new RegExp('(\\s|^)' + classStr + '(\\s|$)'));
+}
+
+function addClass(el, classStr) {
+  if (el.classList)
+	el.classList.add(classStr);
+  else if (!hasClass(el, classStr)) el.className += " " + classStr;
+}
+
+function removeClass(el, classStr) {
+  if (el.classList)
+	el.classList.remove(classStr);
+  else if (hasClass(el, classStr)) {
+	var reg = new RegExp('(\\s|^)' + classStr + '(\\s|$)');
+	el.className=el.className.replace(reg, ' ');
+  }
+}
+var startX, startWidth;
+document.addEventListener("DOMContentLoaded", init);
+function init(){
+	id('resizer').addEventListener( 'mousedown', initDrag, false );
+	var parsedUrl = new URL(window.location.href);
+	switch (parsedUrl.searchParams.get("book")) {
+	case 'SQL':
+		id('list').innerHTML="";
+		id('title').innerText='Zero-to-Hero: SQL';
+		id('frame').addEventListener( 'load', createTOC, false );
+		id('frame').src="./SQL/SQL.html"
+        break;
+	default:
+		console.log('URL parse failed.');
+	}
+	
+}
+
+function createTOC(){
+ doc = (frame.contentWindow || frame.contentDocument);
+if (doc.document) {doc = doc.document;}
+doc.body.style.maxWidth='60em';
+doc.body.style.margin="0 auto";
+var elements=doc.body.querySelectorAll('h1');
+var contents=id("list");
+var node, i, el;
+for (i = 0; i < elements.length; ++i) {
+	el=elements[i];
+	node = document.createElement("li"); 
+	node.innerHTML='<a href="javascript: scrollToHeading('+i+')">'+el.innerText+'</a>';
+	contents.appendChild(node); 
+	}
+	id('frame').removeEventListener( 'load', createTOC);
+}
+
+function scrollToHeading(h1){
+var elements=doc.body.querySelectorAll('h1');
+  elements[h1].scrollIntoView();
+}
+
+function initDrag( e ) {
+	addClass(id('frame'), 'nopointerevents');
+	startX = e.clientX;
+	startWidth = parseInt( document.defaultView.getComputedStyle(id('contents')).width, 10)+1;
+	document.documentElement.addEventListener('mousemove', doDrag, false);
+	document.documentElement.addEventListener('mouseup', stopDrag, false);
+}
+
+function doDrag(e) {
+	id('contents').style.width = (startWidth + e.clientX - startX) + 'px';
+}
+
+function stopDrag(e) {
+	document.documentElement.removeEventListener('mousemove', doDrag, false);			
+	document.documentElement.removeEventListener('mouseup', stopDrag, false);
+	removeClass(id('frame'), 'nopointerevents')
+}
+	
+
+</script>
+</head>
+<body>
+<div id="top"><a id="logo" class="benton" href="https://zero-to-hero-books.github.io/books/">Zero-to-Hero books</a><a id="contact" href="javascript:eobox.showForm(2);"><img src="./mail-message-new.png"> Questions & Feedback</a></div>
+<div id="wrapper" style="position: absolute; top: 2em; left: 0; right: 0; bottom: 0;">
+	<div id="contents" style="width:16em; float:left; height:100%; position:relative; padding-right:7px;">
+	<div id="title" class="benton" style="font-weight:bold; text-align:center; padding:0.5em 0.5em 0 0.5em;"></div>
+		<ul id="list"></ul>
+		<div id="resizer" style="border:1px dotted #ccc; width:6px; position: absolute; right:0; top:0; bottom:0; cursor: e-resize;"></div>
+	</div>
+	<div id="book" style="height: 100%; position:relative; overflow:hidden;">
+			<iframe style="width:100%; height:100%; border:0;" id="frame" sandbox="allow-same-origin"></iframe>
+	</div>
+</div>
+</body>
+</html>
