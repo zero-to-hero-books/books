@@ -45,9 +45,8 @@ var startX, startWidth;
 document.addEventListener("DOMContentLoaded", init);
 function init(){
 	id('resizer').addEventListener( 'mousedown', initDrag, false );
-	var parsedUrl = new URL(window.location.href);
-	switch (parsedUrl.searchParams.get("book")) {
-	case 'SQL':
+	switch (window.location.search) {
+	case '?SQL':
 		id('list').innerHTML="";
 		id('title').innerText='Zero-to-Hero: SQL';
 		id('frame').addEventListener( 'load', createTOC, false );
@@ -60,6 +59,7 @@ function init(){
 }
 
 function createTOC(){
+	var frame=id('frame');
  doc = (frame.contentWindow || frame.contentDocument);
 if (doc.document) {doc = doc.document;}
 doc.body.style.maxWidth='60em';
